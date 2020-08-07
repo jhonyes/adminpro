@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { UsuarioService } from '../usuario/usuario.service';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
@@ -14,10 +15,9 @@ export class LoginGuardGuard implements CanActivate {
   }
   canActivate() {
     if ( this._usuarioService.estaLogueado() ) {
-      console.log('PASÓ EL GUARD');
       return true;
     }else {
-      console.log('Bloqueado por guard');
+      Swal.fire('Bloqueado','Debe loguearse primero', 'warning');
       this.router.navigate(['/login']);
       return false;
     }

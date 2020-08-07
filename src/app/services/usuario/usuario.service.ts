@@ -48,7 +48,7 @@ export class UsuarioService {
   }
 
   loginGoogle( token: string ) {
-    let url = `${ URL_SERVICIOS }/login/google`;
+    const url = `${ URL_SERVICIOS }/login/google`;
 
     return this.http.post( url, { token })
           .pipe( map((resp: any) => {
@@ -58,7 +58,7 @@ export class UsuarioService {
   }
 
   login( usuario: Usuario, recordar: boolean = false ) {
-    let url = `${ URL_SERVICIOS }/login`;
+    const url = `${ URL_SERVICIOS }/login`;
 
     if ( recordar ) {
       localStorage.setItem('email', usuario.email);
@@ -84,7 +84,7 @@ export class UsuarioService {
   }
 
   crearUsuario( usuario: Usuario) {
-    let url = `${ URL_SERVICIOS }/usuario`;
+    const url = `${ URL_SERVICIOS }/usuario`;
 
     return this.http.post( url, usuario )
         .pipe( map( (resp: any) => {
@@ -99,13 +99,14 @@ export class UsuarioService {
 
     return this.http.put( url, usuario )
         .pipe(map( (resp: any) => {
-          let usuarioDB = resp.usuario;
+           if ( usuario._id === this.usuario._id ) {
+            const usuarioDB = resp.usuario;
+            this.guardarStorage( usuarioDB._id, this.token, usuarioDB );
+          }
 
-          this.guardarStorage( usuarioDB._id, this.token, usuarioDB );
+           Swal.fire('Usuario actualizado', usuario.nombre, 'success');
 
-          Swal.fire('Usuario actualizado', usuario.nombre, 'success');
-
-          return true;
+           return true;
         }));
   }
 
@@ -121,5 +122,28 @@ export class UsuarioService {
         .catch( resp => {
           console.log(resp);
         });
+  }
+
+  cargarUsuarios( desde: number = 0 ) {
+    const url = `${ URL_SERVICIOS }/usuario?desde=${ desde }`;
+
+    return this.http.get( url );
+  }
+
+  buscarUsuarios( termino: string ) {
+    const url = `${ URL_SERVICIOS }/busqueda/coleccion/usuarios/${ termino }`;
+
+    return this.http.get( url )
+          .pipe(map( (resp: any) => resp.usuarios));
+  }
+
+  borrarUsuario( id: string ) {
+    const url = `${ URL_SERVICIOS }/usuario/${ id }?token=${ this.token }`;
+
+    return this.http.delete( url )
+            .pipe(map( (resp: any) => {
+              Swal.fire('Usuario borrado', `El usuario ${ resp.usuario.nombre } ha sido eliminado correctamente`, 'success');
+              return true;
+            }));
   }
 }
