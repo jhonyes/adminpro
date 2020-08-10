@@ -35,7 +35,10 @@
                         <th>Nombre</th>
                         <th>Role</th>
                         <th>Auth</th>
-                        <th></th>
+                        <th class="text-center">
+                            <button (click)="cambiarDesde(-5) " class="btn btn-secondary fa fa-caret-square-o-left "></button>
+                            <button (click)="cambiarDesde(5) " class="btn btn-secondary fa fa-caret-square-o-right "></button>
+                        </th>
                     </thead>
                     <tbody>
                         <tr *ngFor="let usuario of usuarios">
@@ -55,7 +58,7 @@
                                 <label *ngIf="!usuario.google " class="label label-info ">Normal</label>
                             </td>
                             <td class="text-center ">
-                                <button (click)="guardarUsuario( usuario)" class="btn btn-primary ">
+                                <button (click)="guardarUsuario( usuario )" class="btn btn-primary ">
                                   <i class="fa fa-save "></i>
                                 </button>
                                 <button (click)="borrarUsuario( usuario )" class="btn btn-danger ">
@@ -67,10 +70,6 @@
 
 
                 </table>
-                <div class="text-center ">
-                    <button (click)="cambiarDesde(-5) " class="btn btn-secondary fa fa-caret-square-o-left "></button>
-                    <button (click)="cambiarDesde(5) " class="btn btn-secondary fa fa-caret-square-o-right "></button>
-                </div>
             </div>
         </div>
     </div>
