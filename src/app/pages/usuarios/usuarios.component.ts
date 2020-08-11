@@ -97,7 +97,6 @@ export class UsuariosComponent implements OnInit {
       confirmButtonText: 'Aceptar',
       cancelButtonText: 'Cancelar'
     }).then(borrar => {
-      console.log(borrar);
 
       if (borrar.isConfirmed) {
         this._usuariosService.borrarUsuario( usuario._id )
